@@ -1,0 +1,316 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/danielbotero13/BTE-320/blob/main/ProblemSet1Fall23\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "# Problem Set 2"
+      ],
+      "metadata": {
+        "id": "mqKVIuY-mxNU"
+      }
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Assignment 1: Quality Control (7 points)\n",
+        "\n",
+        "A quality control manager would like to find the average weight of a list of weights. Prior experience indicates that the first two measures are atypical, and the practice is to exclude these from the average calculation.\n",
+        "\n",
+        "Write a program that calculates the average of a list of numbers that given as inputs from the user, excluding the first two values.\n",
+        "\n",
+        "For your program, you must define and use the following functions:\n",
+        "- `getValues(n)`: Prompt the user for `n` values, returns the list\n",
+        "- `calcAverage(alist)`: Calculates the average from the list"
+      ],
+      "metadata": {
+        "id": "-RSYW1jVm08n"
+      }
+    },
+    {
+      "cell_type": "code",
+      "execution_count": null,
+      "metadata": {
+        "id": "AqbgJkgNmvQw",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "cb790fd4-6e11-4a8b-d2e6-70be9704d19c"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "How many values would you like to input?6\n",
+            "Enter value 1: 10\n",
+            "Enter value 2: 10\n",
+            "Enter value 3: 1\n",
+            "Enter value 4: 1\n",
+            "Enter value 5: 1\n",
+            "Enter value 6: 1\n",
+            "The average excluding the first two values is:  1.00\n"
+          ]
+        }
+      ],
+      "source": [
+        "def getValues(n):\n",
+        "  values = []\n",
+        "  for i in range(n):\n",
+        "    value = float(input(f\"Enter value {i+1}: \"))\n",
+        "    values.append(value)\n",
+        "  return values\n",
+        "\n",
+        "def calcAverage(alist):\n",
+        "  if len(alist) <= 2:\n",
+        "    return 0\n",
+        "  return sum(alist[2:])/(len(alist) - 2)\n",
+        "\n",
+        "n = int(input(\"How many values would you like to input?\"))\n",
+        "values = getValues(n)\n",
+        "if len(values) > 2:\n",
+        "  average = calcAverage(values)\n",
+        "  print(f\"The average excluding the first two values is: {average: .2f}\")\n",
+        "else:\n",
+        "  print(\"Not enough values to exclude the first two and calculate an average.\")"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Assignment 2: Country Statistics Lookup-Multiple Measures (6 points)\n",
+        "\n",
+        "Assume a program begins with the statement:\n",
+        "\n",
+        "```python\n",
+        "allData = { # dictionary of values for countries\n",
+        "    'US': {'pop':325.7, 'gdp': 19.39, 'ccy': 'USD', 'fx':  1.0},\n",
+        "    'CA': {'pop': 36.5, 'gdp':  1.65, 'ccy': 'CAD', 'fx':  1.35},\n",
+        "    'MX': {'pop':129.2, 'gdp':  1.15, 'ccy': 'MXN', 'fx': 19.68}\n",
+        "    }\n",
+        "```\n",
+        "\n",
+        "Write subsequent statements that (in a loop) prompt the user for a country code (`US`, `CA`, or `MX`), then prompt for a measure name (`pop`, `gdp`, `ccy`, or `fx`), then look up in the above dictionary for the corresponding value, and display it.\n",
+        "\n",
+        "Example run:\n",
+        "```\n",
+        "Please enter a country code: CA\n",
+        "Please enter a statistic: pop\n",
+        "CA pop = 36.5\n",
+        "```\n",
+        "\n",
+        "Your program should handle the cases where a user-entered country code or measure name is not found."
+      ],
+      "metadata": {
+        "id": "QFO0Kzx8ncnv"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "allData = { # dictionary of values for countries\n",
+        "    'US': {'pop':325.7, 'gdp': 19.39, 'ccy': 'USD', 'fx':  1.0},\n",
+        "    'CA': {'pop': 36.5, 'gdp':  1.65, 'ccy': 'CAD', 'fx':  1.35},\n",
+        "    'MX': {'pop':129.2, 'gdp':  1.15, 'ccy': 'MXN', 'fx': 19.68}\n",
+        "    }\n",
+        "\n",
+        "while True:\n",
+        "  country_code = input('Enter a country code (US, CA, MX) or \"quit\" to exit: ').upper()\n",
+        "  if country_code == 'QUIT':\n",
+        "    break\n",
+        "\n",
+        "  if country_code not in allData:\n",
+        "    print('Country code not found. Please try again.')\n",
+        "    continue\n",
+        "\n",
+        "  while True:\n",
+        "\n",
+        "    measure = input('Enter a measure name (pop, gdp, ccy, fx): ').lower()\n",
+        "    if measure not in allData[country_code]:\n",
+        "      print('Measure name not found. Please try again.')\n",
+        "      continue\n",
+        "\n",
+        "    value = allData[country_code][measure]\n",
+        "    print(f'The {measure} of {country_code} is {value}.')\n",
+        "    break\n",
+        "\n",
+        "  continue_prompt = input('Do you want to look up another value? (yes/no): ').lower()\n",
+        "  if continue_prompt != 'yes':\n",
+        "    break"
+      ],
+      "metadata": {
+        "id": "NZFjRINKowEW",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "85f7cfb5-621a-4e60-897a-9dc2e34fbf34"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "name": "stdout",
+          "output_type": "stream",
+          "text": [
+            "Enter a country code (US, CA, MX) or \"quit\" to exit: usa\n",
+            "Country code not found. Please try again.\n",
+            "Enter a country code (US, CA, MX) or \"quit\" to exit: us\n",
+            "Enter a measure name (pop, gdp, ccy, fx): pdp\n",
+            "Measure name not found. Please try again.\n",
+            "Enter a measure name (pop, gdp, ccy, fx): pop\n",
+            "The pop of US is 325.7.\n",
+            "Do you want to look up another value? (yes/no): yes\n",
+            "Enter a country code (US, CA, MX) or \"quit\" to exit: mx\n",
+            "Enter a measure name (pop, gdp, ccy, fx): gdp\n",
+            "The gdp of MX is 1.15.\n",
+            "Do you want to look up another value? (yes/no): no\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Assignment 3: Parking Garage (6 points)\n",
+        "\n",
+        "Write a program to compute the fee for parking in a garage for a number of hours.\n",
+        "\n",
+        "The program should:\n",
+        "- Prompt the user for how many hours parked\n",
+        "- Calculate the fee based on the following rules:\n",
+        "  - $2.50/hour\n",
+        "\n",
+        "  - minimum fee is $6.00\n",
+        "\n",
+        "  - maximum fee is $20.00\n",
+        "- Print the result\n",
+        "\n",
+        "For your program, define and use the following two functions:\n",
+        "```python\n",
+        "# use input() to prompt for the # of hours parked, return this value\n",
+        "def getParkingHours()\n",
+        "\n",
+        "# takes as input hours (a number), returns the parking fee\n",
+        "def calcParkingFee()\n",
+        "```"
+      ],
+      "metadata": {
+        "id": "GjaUFrnfpKFf"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def getParkingHours():\n",
+        "  hours = float(input(\"Enter the number of hours parked: \"))\n",
+        "  return hours\n",
+        "\n",
+        "def calcParkingFee(hours):\n",
+        "  fee = hours * 2.50\n",
+        "  if fee < 6.00:\n",
+        "    fee = 6.00\n",
+        "  if fee > 20.00:\n",
+        "    fee = 20.00\n",
+        "  return fee\n",
+        "\n",
+        "hours_parked = getParkingHours()\n",
+        "parking_fee = calcParkingFee(hours_parked)\n",
+        "print(f'The Parking fee is: ${parking_fee:.2f}')"
+      ],
+      "metadata": {
+        "id": "5ha4O3V5pwNN",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "0990d1a6-6306-4efb-e0fd-653c9dc3b303"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the number of hours parked: 100\n",
+            "The Parking fee is: $20.00\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Assignment 4: Tuition (6 points)\n",
+        "\n",
+        "A college charges tuition according to the following:\n",
+        "- 12 or more credits: $20,000/semester\n",
+        "\n",
+        "- 1-11 credits: $1,200 + $1,700 per credit\n",
+        "\n",
+        "Write a program that prompts the user for a number of credits and determines and displays the tuition for the semester. As part of your program, define and use the following function:\n",
+        "```python\n",
+        "def calcTuition(credits)\n",
+        "```\n",
+        "The function returns the tuition for a given number of credits"
+      ],
+      "metadata": {
+        "id": "gipBObe5qm-2"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "def calcTuition(credits):\n",
+        "  if credits >= 12:\n",
+        "    tuition = 20000\n",
+        "  else:\n",
+        "    tuition = 1200 + credits * 1700\n",
+        "  return tuition\n",
+        "\n",
+        "credits = int(input('Enter the number of credits for the semester: '))\n",
+        "tuition = calcTuition(credits)\n",
+        "print(f'The tuition for {credits} credits is: ${tuition}')"
+      ],
+      "metadata": {
+        "id": "BPcn9ywzrL8y",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "outputId": "e00381d7-c321-46ac-fc14-71a7baf961e5"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Enter the number of credits for the semester: 3\n",
+            "The tuition for 3 credits is: $6300\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
